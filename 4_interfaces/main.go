@@ -6,6 +6,7 @@ type bot interface {
 	getGreeting() string
 }
 
+
 type englishBot struct{}
 type portuguesBot struct{}
 
@@ -23,6 +24,9 @@ func printGreeting(b bot) {
 	fmt.Println(b.getGreeting())
 }
 
+/*
+ that means you implement bot interface
+*/
 func (englishBot) getGreeting() string {
 	return "Hi there!"
 }

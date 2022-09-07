@@ -18,7 +18,7 @@ func main() {
 	// channel is the only way that can communicate between go routines and main routine
 	// channel is a communication mechanism that allows two or more goroutines to communicate with each other and synchronize their execution
 	// create a channel
-	c := make(chan string)
+	c := make(chan string) // create a channel that will receive a string as input
 
 	for _, url := range links {
 		// checkLink(url) // this function will generate a block io, will await for the result and then check the next link
