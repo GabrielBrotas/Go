@@ -86,10 +86,11 @@ func openDb(cfg config) (*sql.DB, error) {
 		return nil, err
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	ctx := context.Background() // create context
+	ctx, cancel := context.WithTimeout(ctx, time.Second*5) // 5 seconds to be resolved before cancel
 	defer cancel()
 
-	err = db.PingContext(ctx)
+	err = db.PingContext(ctx) // verify if the connection with the db is alive
 
 	if err != nil {
 		return nil, err
