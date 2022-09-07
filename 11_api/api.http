@@ -1,0 +1,6 @@
+
+GET http://localhost:4000/status
+
+###
+
+GET http://localhost:4000/v1/movie/alp
