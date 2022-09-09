@@ -10,6 +10,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/GabrielBrotas/myapi/models"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
@@ -33,6 +34,7 @@ type config struct {
 type application struct {
 	config config
 	logger *log.Logger
+	models models.Models
 }
 
 func main() {
@@ -59,6 +61,17 @@ func main() {
 	app := &application{
 		config: cfg,
 		logger: logger,
+		models: models.NewModels(db),
+	}
+
+	syncDbCh := make(chan error)
+
+	go app.models.DB.Init(syncDbCh)
+
+	dbSyncErr := <- syncDbCh
+
+	if dbSyncErr != nil {
+		log.Fatalf("Error on sync db")
 	}
 
 	server := &http.Server{
@@ -88,7 +101,7 @@ func openDb(cfg config) (*sql.DB, error) {
 
 	ctx := context.Background() // create context
 	ctx, cancel := context.WithTimeout(ctx, time.Second*5) // 5 seconds to be resolved before cancel
-	defer cancel()
+	defer cancel() // cancel context once finish this function
 
 	err = db.PingContext(ctx) // verify if the connection with the db is alive
 

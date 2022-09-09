@@ -2,5 +2,18 @@
 GET http://localhost:4000/status
 
 ###
+GET http://localhost:4000/v1/movie/12
 
-GET http://localhost:4000/v1/movie/alp
+###
+GET http://localhost:4000/v1/movies
+
+
+###
+POST http://localhost:4000/v1/movies
+Content-Type: application/json
+
+{
+  "title": "Spider Man",
+  "description": "best movie ever",
+  "year": 2000
+}
