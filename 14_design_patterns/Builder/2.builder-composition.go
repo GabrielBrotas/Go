@@ -3,6 +3,10 @@ package main
 import "fmt"
 
 type Person struct {
+	// personal
+	name string
+	age int
+
 	// address
 	StreetAddress, PostCode, City string
 
@@ -17,6 +21,10 @@ type PersonBuilder struct {
 
 func (b *PersonBuilder) Build() *Person {
 	return b.person
+}
+
+func (b *PersonBuilder) Personal() *PersonPersonalBuilder {
+	return &PersonPersonalBuilder{*b}
 }
 
 func (b *PersonBuilder) Lives() *PersonAddressBuilder {
@@ -72,15 +80,28 @@ func (pjb *PersonJobBuilder) Earning(annualIncome int) *PersonJobBuilder {
 	return pjb
 }
 
+type PersonPersonalBuilder struct {
+	PersonBuilder
+}
+
+func (ppb *PersonPersonalBuilder) Called(name string) *PersonPersonalBuilder {
+	ppb.person.name = name
+	return ppb
+}
+
+func (ppb *PersonPersonalBuilder) Age(age int) *PersonPersonalBuilder {
+	ppb.person.age = age
+	return ppb
+}
 
 func main() {
 	pb := NewPersonBuilder()
 	pb.
-		Lives().At("Camacari BA").In("Brazil").WithPostcode("42800-000").
-		Works().At("Wex").AsA("Software Engineer").Earning(999999)
+		Personal().Called("Gabriel").Age(22).
+		Lives().At("Camacari BA").In("Brazil").WithPostcode("00000-000").
+		Works().At("Company A").AsA("Software Engineer")
 
 	person := pb.Build()
 
 	fmt.Println(person)
-
 }
